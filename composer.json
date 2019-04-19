@@ -1,0 +1,42 @@
+{
+  "name": "divanteltd/pimcore-classification-tree",
+  "type": "pimcore-bundle",
+  "license": "GPL-3.0-or-later",
+  "description": "",
+  "keywords": [
+    "pimcore",
+    "pimcore-plugin"
+  ],
+  "homepage": "https://www.divante.co/",
+  "authors": [
+    {
+      "name": "Michał Bolka",
+      "email": "mbolka@divante.pl",
+      "role": "Developer"
+    },
+    {
+      "name": "Bruno Ramalho",
+      "email": "bramalho@divante.pl",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "pimcore/advanced-object-search": "~1.8",
+    "divanteltd/pimcoredevkit": "^0.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "Divante\\ClassificationTreeBundle\\": "src/ClassificationTreeBundle"
+    }
+  },
+  "extra": {
+    "pimcore": {
+      "bundles": [
+        "Divante\\ClassificationTreeBundle\\DivanteClassificationTreeBundle"
+      ]
+    },
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
+  }
+}
