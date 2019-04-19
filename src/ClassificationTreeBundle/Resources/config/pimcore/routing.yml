@@ -1,0 +1,5 @@
+divante_classification_tree:
+    resource: "@DivanteClassificationTreeBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
