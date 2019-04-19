@@ -19,7 +19,7 @@ This module is compatible with Pimcore 5.3.0 and higher.
 ## Installing/Getting started
 
 ```bash
-composer require divanteltd/pimcore-classification-tree
+composer require divante/pimcore-classification-tree
 ```
 
 ## Requirements
