@@ -30,7 +30,8 @@
     "symfony/phpunit-bridge": "^4.2",
     "divante-ltd/pimcore-coding-standards": "^0.1.1",
     "phpmd/phpmd": "^2.6",
-    "sebastian/phpcpd": "^4.1"
+    "sebastian/phpcpd": "^4.1",
+    "block8/php-docblock-checker": "^1.10"
   },
   "autoload": {
     "psr-4": {
