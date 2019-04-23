@@ -67,9 +67,9 @@ class ClassificationTreeBuilder
     }
 
     /**
-     * @param     $nodeId
-     * @param     $nodeName
-     * @param     $classificationName
+     * @param int $nodeId
+     * @param string $nodeName
+     * @param string $classificationName
      * @param int $limit
      * @param int $start
      * @return array
@@ -98,7 +98,7 @@ class ClassificationTreeBuilder
     }
 
     /**
-     * @param $nodeId
+     * @param int $nodeId
      * @param int $limit
      * @param int $start
      * @return array
@@ -149,7 +149,7 @@ class ClassificationTreeBuilder
     }
 
     /**
-     * @param     $nodeId
+     * @param string $nodeName
      * @param int $limit
      * @param int $start
      * @return array
@@ -217,8 +217,8 @@ class ClassificationTreeBuilder
     }
 
     /**
-     * @param     $nodeName
-     * @param     $classificationName
+     * @param string $nodeName
+     * @param string $classificationName
      * @param int $limit
      * @param int $start
      * @return array
