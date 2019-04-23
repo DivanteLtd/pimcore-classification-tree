@@ -27,9 +27,8 @@
     </filter>
 
     <php>
-        <env name="SYMFONY_PHPUNIT_VERSION" value="7.4" />
-        <env name="PIMCORE_PROJECT_ROOT" value="." />
-        <env name="KERNEL_DIR" value="app" />
-        <env name="KERNEL_CLASS" value="AppKernel" />
+        <env name="KERNEL_CLASS" value="TestAppKernel" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="100"/>
+        <server name="IS_DOCTRINE_ORM_SUPPORTED" value="true" />
     </php>
 </phpunit>
