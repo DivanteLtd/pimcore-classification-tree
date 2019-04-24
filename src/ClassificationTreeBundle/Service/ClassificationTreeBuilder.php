@@ -31,11 +31,11 @@ class ClassificationTreeBuilder
     /**
      * ClassificationTreeBuilder constructor.
      * @param Service $searchService
+     * @param StoreConfig\Listing|null $list
      */
     public function __construct(Service $searchService, StoreConfig\Listing $list = null)
     {
         $this->searchService = $searchService;
-
         $this->listing = $list;
     }
 
@@ -81,7 +81,7 @@ class ClassificationTreeBuilder
     }
 
     /**
-     * @param int $nodeId
+     * @param string $nodeId
      * @param string $nodeName
      * @param string $classificationName
      * @param int $limit
@@ -93,11 +93,13 @@ class ClassificationTreeBuilder
     {
         if (strpos($nodeId, 'EC') === 0) {
             return $this->getClassificationCollections($nodeId, $limit, $start);
-        } elseif (strpos($nodeId, 'EG') === 0) {
-            return $this->getProductsFromGroup($this->getRawNodeName($nodeName), $classificationName, $limit, $start);
-        } else {
-            return $this->getClassificationGroups($nodeId, $limit, $start);
         }
+
+        if (strpos($nodeId, 'EG') === 0) {
+            return $this->getProductsFromGroup($this->getRawNodeName($nodeName), $classificationName, $limit, $start);
+        }
+
+        return $this->getClassificationGroups($nodeId, $limit, $start);
     }
 
     /**
