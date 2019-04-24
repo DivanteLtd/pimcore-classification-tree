@@ -22,16 +22,29 @@ use Pimcore\Model\DataObject\Product;
  */
 class ClassificationTreeBuilder
 {
-    /** @var  Service */
+    /** @var Service $searchService */
     protected $searchService;
+
+    /** @var StoreConfig\Listing $listing */
+    private $listing;
 
     /**
      * ClassificationTreeBuilder constructor.
      * @param Service $searchService
      */
-    public function __construct(Service $searchService)
+    public function __construct(Service $searchService, StoreConfig\Listing $list = null)
     {
         $this->searchService = $searchService;
+
+        $this->listing = $list;
+    }
+
+    /**
+     * @return StoreConfig\Listing
+     */
+    private function getListing()
+    {
+        return $this->listing ?: new StoreConfig\Listing();
     }
 
     /**
@@ -39,9 +52,9 @@ class ClassificationTreeBuilder
      */
     public function getRootNodes()
     {
-        $list   = new StoreConfig\Listing();
-        $list   = $list->load();
+        $list = $this->getListing()->load();
         $result = [];
+
         /** @var $item StoreConfig */
         foreach ($list as $item) {
             $resultItem = [
@@ -61,6 +74,7 @@ class ClassificationTreeBuilder
                 'text'          => $item->getName(),
                 'type'          => 'folder'
             ];
+
             $result[]   = $resultItem;
         }
         return $result;

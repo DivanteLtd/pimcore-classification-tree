@@ -5,6 +5,8 @@ namespace Divante\ClassificationTreeBundle\Service;
 use AdvancedObjectSearchBundle\Service;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Pimcore\Model\DataObject\Classificationstore\StoreConfig\Listing;
+use Pimcore\Model\DataObject\Classificationstore\StoreConfig;
 
 class ClassificationTreeBuilderTest extends TestCase
 {
@@ -13,16 +15,38 @@ class ClassificationTreeBuilderTest extends TestCase
 
     public function setUp(): void
     {
-        parent::setUp();
-
         /** @var Service|MockObject $searchService */
         $searchService = $this->createMock(Service::class);
 
-        $this->classificationTreeBuilder = new ClassificationTreeBuilder($searchService);
+        /** @var Listing|MockObject $listing */
+        $listing = $this->getMockBuilder(Listing::class)
+            ->setMethods(['load'])
+            ->getMock();
+        $listing->method('load')
+            ->withAnyParameters()
+            ->willReturn([new StoreConfig()]);
+
+        $this->classificationTreeBuilder = new ClassificationTreeBuilder($searchService, $listing);
     }
 
-    public function testSomething()
+    public function testGetRootNodes()
     {
-        $this->assertTrue(true);
+        $result = $this->classificationTreeBuilder->getRootNodes();
+
+        $this->assertArrayHasKey('allowChildren', current($result));
+        $this->assertArrayHasKey('allowDrop', current($result));
+        $this->assertArrayHasKey('basePath', current($result));
+        $this->assertArrayHasKey('elementType', current($result));
+        $this->assertArrayHasKey('expanded', current($result));
+        $this->assertArrayHasKey('iconCls', current($result));
+        $this->assertArrayHasKey('id', current($result));
+        $this->assertArrayHasKey('isTarget', current($result));
+        $this->assertArrayHasKey('leaf', current($result));
+        $this->assertArrayHasKey('locked', current($result));
+        $this->assertArrayHasKey('path', current($result));
+        $this->assertArrayHasKey('permissions', current($result));
+        $this->assertArrayHasKey('qtipCfg', current($result));
+        $this->assertArrayHasKey('text', current($result));
+        $this->assertArrayHasKey('text', current($result));
     }
 }
