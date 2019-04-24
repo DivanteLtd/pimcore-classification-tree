@@ -25,26 +25,30 @@ class ClassificationTreeBuilder
     /** @var Service $searchService */
     protected $searchService;
 
-    /** @var StoreConfig\Listing $listing */
-    private $listing;
+    /** @var StoreConfig\Listing $storeConfigListing */
+    private $storeConfigListing;
 
     /**
      * ClassificationTreeBuilder constructor.
      * @param Service $searchService
-     * @param StoreConfig\Listing|null $list
+     * @param StoreConfig\Listing|null $storeConfigListing
+     * @param Classificationstore\CollectionGroupRelation\Listing|null $collectingGroupRelationListing
      */
-    public function __construct(Service $searchService, StoreConfig\Listing $list = null)
+    public function __construct(
+        Service $searchService,
+        StoreConfig\Listing $storeConfigListing = null
+    )
     {
         $this->searchService = $searchService;
-        $this->listing = $list;
+        $this->storeConfigListing = $storeConfigListing;
     }
 
     /**
      * @return StoreConfig\Listing
      */
-    private function getListing()
+    private function getStoreConfigListing()
     {
-        return $this->listing ?: new StoreConfig\Listing();
+        return $this->storeConfigListing ?: new StoreConfig\Listing();
     }
 
     /**
@@ -52,7 +56,7 @@ class ClassificationTreeBuilder
      */
     public function getRootNodes()
     {
-        $list = $this->getListing()->load();
+        $list = $this->getStoreConfigListing()->load();
         $result = [];
 
         /** @var $item StoreConfig */

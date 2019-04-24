@@ -5,7 +5,6 @@ namespace Divante\ClassificationTreeBundle\Service;
 use AdvancedObjectSearchBundle\Service;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Pimcore\Model\DataObject\Classificationstore\StoreConfig\Listing;
 use Pimcore\Model\DataObject\Classificationstore\StoreConfig;
 
 class ClassificationTreeBuilderTest extends TestCase
@@ -18,15 +17,17 @@ class ClassificationTreeBuilderTest extends TestCase
         /** @var Service|MockObject $searchService */
         $searchService = $this->createMock(Service::class);
 
-        /** @var Listing|MockObject $listing */
-        $listing = $this->getMockBuilder(Listing::class)
+        /** @var StoreConfig\Listing|MockObject $listing */
+        $storeConfigListing = $this->getMockBuilder(StoreConfig\Listing::class)
             ->setMethods(['load'])
             ->getMock();
-        $listing->method('load')
+        $storeConfigListing->method('load')
             ->withAnyParameters()
             ->willReturn([new StoreConfig()]);
 
-        $this->classificationTreeBuilder = new ClassificationTreeBuilder($searchService, $listing);
+        $this->classificationTreeBuilder = new ClassificationTreeBuilder(
+            $searchService, $storeConfigListing
+        );
     }
 
     public function testGetRootNodes()
