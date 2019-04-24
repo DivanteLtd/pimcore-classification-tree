@@ -25,10 +25,4 @@
             </exclude>
         </whitelist>
     </filter>
-
-    <php>
-        <env name="KERNEL_CLASS" value="TestAppKernel" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="100" />
-        <server name="IS_DOCTRINE_ORM_SUPPORTED" value="true" />
-    </php>
 </phpunit>
