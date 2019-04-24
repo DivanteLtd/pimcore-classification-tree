@@ -3,6 +3,7 @@
 namespace Tests\Unit\Divante\ClassificationTreeBundle\Service;
 
 use AdvancedObjectSearchBundle\Service;
+use Divante\ClassificationTreeBundle\Service\ClassificationTreeBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Pimcore\Model\DataObject\Classificationstore\StoreConfig;

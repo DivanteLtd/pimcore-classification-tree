@@ -7,6 +7,8 @@
          beStrictAboutCoversAnnotation="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
+         convertNoticesToExceptions="false"
+         convertWarningsToExceptions="false"
          verbose="true">
     <testsuites>
         <testsuite name="Unit Tests">
