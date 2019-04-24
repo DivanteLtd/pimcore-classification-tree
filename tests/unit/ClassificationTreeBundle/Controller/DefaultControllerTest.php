@@ -1,6 +1,6 @@
 <?php
 
-namespace Divante\ClassificationTreeBundle\Controller;
+namespace Tests\Unit\Divante\ClassificationTreeBundle\Controller;
 
 use Pimcore\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Divante\ClassificationTreeBundle\Service;
+namespace Tests\Unit\Divante\ClassificationTreeBundle\Service;
 
 use AdvancedObjectSearchBundle\Service;
 use PHPUnit\Framework\MockObject\MockObject;
