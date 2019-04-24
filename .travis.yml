@@ -1,0 +1,11 @@
+language: php
+
+cache:
+  directories:
+    - $HOME/.cache/composer
+
+install:
+  - scripts/install.sh
+
+script:
+  - scripts/phpunit.sh
