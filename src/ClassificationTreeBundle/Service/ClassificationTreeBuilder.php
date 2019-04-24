@@ -81,6 +81,7 @@ class ClassificationTreeBuilder
 
             $result[]   = $resultItem;
         }
+
         return $result;
     }
 
