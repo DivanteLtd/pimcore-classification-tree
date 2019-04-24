@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./vendor/bin/phpdoccheck --directory=src
+vendor/bin/phpdoccheck --directory=src

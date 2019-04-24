@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./vendor/bin/phpcpd src
+vendor/bin/phpcpd src

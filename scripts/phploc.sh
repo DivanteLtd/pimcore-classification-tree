@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./vendor/bin/phploc src
+vendor/bin/phploc src
