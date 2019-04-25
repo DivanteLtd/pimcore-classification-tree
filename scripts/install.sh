@@ -27,6 +27,7 @@ cp -r src/$PACKAGE_NAME $PROJECT_DIR/src/
 cp -r tests $PROJECT_DIR/tests/
 cp -r phpunit.xml $PROJECT_DIR/phpunit.xml
 cp -r composer.json $PROJECT_DIR/composer.local.json
+cp -r scripts/ $PROJECT_DIR/scripts
 cp -r scripts/config_test.yml $PROJECT_DIR/app/config/config_test.yml
 
 cd $PROJECT_DIR
