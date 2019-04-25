@@ -1,11 +1,12 @@
 language: php
 
 cache:
-  directories:
-    - $HOME/.cache/composer
+    directories:
+        - $HOME/.cache/composer
 
 #install:
 #  - scripts/install.sh
 
 script:
-  - ./scripts/phpunit.sh
+    - COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --optimize-autoloader
+    - ./scripts/phpunit.sh
