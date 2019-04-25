@@ -14,6 +14,9 @@ DB_USERNAME=${DB_USERNAME-root}
 DB_PASSWORD=${DB_PASSWORD-root}
 DB_DATABASE=${DB_DATABASE-pimcore_test}
 
+echo $DB_PASSWORD
+exit 1
+
 echo -e "\e[34m=> Start installing project \e[0m"
 
 echo -e "\e[32m=> Clean old project files \e[0m"
@@ -39,10 +42,10 @@ echo -e "\e[32m=> Create Database \e[0m"
 if test -z "$DB_PASSWORD"
 then
     mysql --host=$DB_HOST --port=$DB_PORT --user=$DB_USERNAME \
-        -e "DROP DATABASE IF EXISTS $DB_DATABASE; CREATE DATABASE pimcore_test CHARSET=utf8mb4;"
+        -e "DROP DATABASE IF EXISTS $DB_DATABASE; CREATE DATABASE $DB_DATABASE CHARSET=utf8mb4;"
 else
     mysql --host=$DB_HOST --port=$DB_PORT --user=$DB_USERNAME --password=$DB_PASSWORD \
-        -e "DROP DATABASE IF EXISTS $DB_DATABASE; CREATE DATABASE pimcore_test CHARSET=utf8mb4;"
+        -e "DROP DATABASE IF EXISTS $DB_DATABASE; CREATE DATABASE $DB_DATABASE CHARSET=utf8mb4;"
 fi
 
 echo -e "\e[32m=> Install Pimcore \e[0m"
@@ -51,7 +54,7 @@ vendor/bin/pimcore-install \
     --admin-username admin \
     --admin-password admin \
     --mysql-host-socket $DB_HOST \
-    --mysql-database pimcore_test \
+    --mysql-database $DB_DATABASE \
     --mysql-username $DB_USERNAME \
     --mysql-password $DB_PASSWORD \
     --mysql-port $DB_PORT \
