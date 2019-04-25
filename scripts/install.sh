@@ -15,6 +15,16 @@ DB_PASSWORD=${DB_PASSWORD-root}
 DB_DATABASE=${DB_DATABASE-pimcore_test}
 
 echo $DB_PASSWORD
+
+if test -z "$DB_PASSWORD"
+then
+    mysql --host=$DB_HOST --port=$DB_PORT --user=$DB_USERNAME \
+        -e "DROP DATABASE IF EXISTS $DB_DATABASE; CREATE DATABASE $DB_DATABASE CHARSET=utf8mb4;"
+else
+    mysql --host=$DB_HOST --port=$DB_PORT --user=$DB_USERNAME --password=$DB_PASSWORD \
+        -e "DROP DATABASE IF EXISTS $DB_DATABASE; CREATE DATABASE $DB_DATABASE CHARSET=utf8mb4;"
+fi
+
 exit 1
 
 echo -e "\e[34m=> Start installing project \e[0m"
