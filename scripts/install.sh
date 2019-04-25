@@ -8,11 +8,11 @@ DEPENDENCIES="$( cd "$(dirname "$0")" ; pwd -P )/dependencies.txt"
 PACKAGE_NAME="ClassificationTreeBundle"
 BUNDLE_NAME="DivanteClassificationTreeBundle"
 
-DB_HOST="localhost"
-DB_PORT=3306
-DB_USERNAME="root"
-DB_PASSWORD=""
-DB_DATABASE="pimcore_test"
+DB_HOST=${DB_HOST-localhost}
+DB_PORT=${DB_PORT-3306}
+DB_USERNAME=${DB_USERNAME-root}
+DB_PASSWORD=${DB_PASSWORD-root}
+DB_DATABASE=${DB_DATABASE-pimcore_test}
 
 echo -e "\e[34m=> Start installing project \e[0m"
 
@@ -35,8 +35,15 @@ echo -e "\e[32m=> Install dependencies \e[0m"
 COMPOSER_DISCARD_CHANGES=true COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --optimize-autoloader
 
 echo -e "\e[32m=> Create Database \e[0m"
-mysql --host=$DB_HOST --port=$DB_PORT --user=$DB_USERNAME --password=$DB_PASSWORD \
-    -e "DROP DATABASE IF EXISTS $DB_DATABASE; CREATE DATABASE pimcore_test CHARSET=utf8mb4;"
+
+if test -z "$DB_PASSWORD"
+then
+    mysql --host=$DB_HOST --port=$DB_PORT --user=$DB_USERNAME \
+        -e "DROP DATABASE IF EXISTS $DB_DATABASE; CREATE DATABASE pimcore_test CHARSET=utf8mb4;"
+else
+    mysql --host=$DB_HOST --port=$DB_PORT --user=$DB_USERNAME --password=$DB_PASSWORD \
+        -e "DROP DATABASE IF EXISTS $DB_DATABASE; CREATE DATABASE pimcore_test CHARSET=utf8mb4;"
+fi
 
 echo -e "\e[32m=> Install Pimcore \e[0m"
 vendor/bin/pimcore-install \
