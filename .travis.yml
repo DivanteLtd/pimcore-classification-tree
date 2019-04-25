@@ -8,4 +8,4 @@ cache:
 #  - scripts/install.sh
 
 script:
-  - scripts/phpunit.sh
+  - ./scripts/phpunit.sh
