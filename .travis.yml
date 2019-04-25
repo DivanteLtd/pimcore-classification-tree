@@ -27,5 +27,5 @@ install:
     - ./scripts/install.sh
 
 script:
-    - cd ./tmp
+    - ls -la
     - ./scripts/phpunit.sh
