@@ -1,5 +1,5 @@
 # Classification Tree
-Classification Tree test you Classification Tree lets upi add new custom view with classification tree
+Classification Tree test you Classification Tree lets you add new custom view with classification tree
 
 **Table of Contents**
 - [Classification Tree](#classification-tree)
