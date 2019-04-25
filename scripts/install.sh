@@ -3,7 +3,7 @@
 set -eu
 
 PROJECT_DIR="$( cd "$(dirname "$0")" ; pwd -P )/../tmp"
-DEPENDENCIES="$( cd "$(dirname "$0")" ; pwd -P )/../dependencies.txt"
+DEPENDENCIES="$( cd "$(dirname "$0")" ; pwd -P )/dependencies.txt"
 
 PACKAGE_NAME="ClassificationTreeBundle"
 BUNDLE_NAME="DivanteClassificationTreeBundle"
