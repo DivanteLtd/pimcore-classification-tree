@@ -4,9 +4,18 @@ cache:
     directories:
         - $HOME/.cache/composer
 
-#install:
-#  - scripts/install.sh
+addons:
+    mariadb: '10.1'
+
+env:
+    global:
+        - PIMCORE_ENVIRONMENT=test
+        - PIMCORE_TEST=1
+        - PIMCORE_TEST_DB_DSN="mysql://root@localhost/pimcore_test"
+
+
+install:
+    - ./scripts/install.sh
 
 script:
-    - COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --optimize-autoloader
     - ./scripts/phpunit.sh

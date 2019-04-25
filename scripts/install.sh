@@ -8,10 +8,10 @@ DEPENDENCIES="$( cd "$(dirname "$0")" ; pwd -P )/dependencies.txt"
 PACKAGE_NAME="ClassificationTreeBundle"
 BUNDLE_NAME="DivanteClassificationTreeBundle"
 
-DB_HOST="192.168.10.10"
+DB_HOST="localhost"
 DB_PORT=3306
-DB_USERNAME="homestead"
-DB_PASSWORD="secret"
+DB_USERNAME="admin"
+DB_PASSWORD="admin"
 DB_DATABASE="pimcore_test"
 
 echo -e "\e[34m=> Start installing project \e[0m"
