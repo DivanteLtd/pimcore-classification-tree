@@ -18,14 +18,16 @@ echo $DB_PASSWORD
 
 if test -z "$DB_PASSWORD"
 then
+    echo "NO PWD"
     mysql --host=$DB_HOST --port=$DB_PORT --user=$DB_USERNAME \
         -e "DROP DATABASE IF EXISTS $DB_DATABASE; CREATE DATABASE $DB_DATABASE CHARSET=utf8mb4;"
 else
+    echo "PWD $DB_PASSWORD"
     mysql --host=$DB_HOST --port=$DB_PORT --user=$DB_USERNAME --password=$DB_PASSWORD \
         -e "DROP DATABASE IF EXISTS $DB_DATABASE; CREATE DATABASE $DB_DATABASE CHARSET=utf8mb4;"
 fi
 
-exit 1
+exit 0
 
 echo -e "\e[34m=> Start installing project \e[0m"
 
