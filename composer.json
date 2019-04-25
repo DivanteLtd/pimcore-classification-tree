@@ -21,7 +21,7 @@
     }
   ],
   "require": {
-    "pimcore/pimcore": "^5.7",
+    "pimcore/pimcore": "^5.5",
     "pimcore/advanced-object-search": "~1.8",
     "divanteltd/pimcoredevkit": "^0.7"
   },
