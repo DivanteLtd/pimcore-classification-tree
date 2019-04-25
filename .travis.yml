@@ -27,4 +27,6 @@ install:
     - ./scripts/install.sh
 
 script:
-    - ./tmp/scripts/phpunit.sh
+    - cd tmp
+    - ./scripts/phpunit.sh
+    - ./scripts/codecept.sh
