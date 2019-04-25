@@ -1,8 +1,8 @@
 # Classification Tree for Pimcore 5
 [![Build Status](https://travis-ci.org/DivanteLtd/pimcore-classification-tree.svg?branch=master)](https://travis-ci.org/DivanteLtd/pimcore-classification-tree)
-[![Latest Stable Version](https://poser.pugx.org/divante-ltd/pimcore-classification-tree/v/stable)](https://packagist.org/packages/divante/pimcore-classification-tree)
-[![Total Downloads](https://poser.pugx.org/divante-ltd/pimcore-classification-tree/downloads)](https://packagist.org/packages/divante/pimcore-classification-tree)
-[![License](https://poser.pugx.org/divante-ltd/pimcore-classification-tree/license)](https://packagist.org/packages/divante/pimcore-classification-tree)
+[![Latest Stable Version](https://poser.pugx.org/divante-ltd/pimcore-classification-tree/v/stable)](https://packagist.org/packages/divante-ltd/pimcore-classification-tree)
+[![Total Downloads](https://poser.pugx.org/divante-ltd/pimcore-classification-tree/downloads)](https://packagist.org/packages/divante-ltd/pimcore-classification-tree)
+[![License](https://poser.pugx.org/divante-ltd/pimcore-classification-tree/license)](https://github.com/DivanteLtd/pimcore-classification-tree/blob/master/LICENSE)
 
 Classification Tree test you Classification Tree lets you add new custom view with classification tree
 
