@@ -3,6 +3,8 @@
 
 Classification Tree test you Classification Tree lets you add new custom view with classification tree
 
+![Classification Tree](docs/example.jpeg?raw=true "Classification Tree")
+
 **Table of Contents**
 - [Classification Tree](#classification-tree)
 	- [Compatibility](#compatibility)
@@ -23,6 +25,11 @@ This module is compatible with Pimcore 5.3.0 and higher.
 
 ```bash
 composer require divante/pimcore-classification-tree
+```
+
+Enable the Bundle:
+```bash
+./bin/console pimcore:bundle:enable DivanteClassificationTreeBundle
 ```
 
 ## Requirements
