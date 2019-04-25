@@ -1,4 +1,6 @@
-# Classification Tree
+# Classification Tree for Pimcore 5
+[![Build Status](https://travis-ci.org/DivanteLtd/pimcore-classification-tree.svg?branch=master)](https://travis-ci.org/DivanteLtd/pimcore-classification-tree)
+
 Classification Tree test you Classification Tree lets you add new custom view with classification tree
 
 **Table of Contents**
