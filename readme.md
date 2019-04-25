@@ -8,6 +8,7 @@ Classification Tree test you Classification Tree lets upi add new custom view wi
 	- [Requirements](#requirements)
 	- [Features](#features)
 	- [Configuration](#configuration)
+	- [Testing](#testing)
 	- [Contributing](#contributing)
 	- [Licensing](#licensing)
 	- [Standards & Code Quality](#standards--code-quality)
@@ -30,6 +31,19 @@ TODO
 
 ## Configuration
 In Pimcore panel select Extensions click Install and Enable.
+
+## Testing
+Unit Tests:
+```bash
+PIMCORE_TEST_DB_DSN="mysql://username:password@localhost/pimcore_test" \
+    vendor/bin/phpunit
+```
+
+Functional Tests:
+```bash
+PIMCORE_TEST_DB_DSN="mysql://username:password@localhost/pimcore_test" \
+    vendor/bin/codecept run -c tests/codeception.dist.yml
+```
 
 ## Contributing
 If you'd like to contribute, please fork the repository and use a feature branch. Pull requests are warmly welcome.
