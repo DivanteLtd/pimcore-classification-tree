@@ -58,7 +58,7 @@ If you'd like to contribute, please fork the repository and use a feature branch
 
 ## Licence 
 CoreShop VsBridge source code is completely free and released under the 
-[MIT License](https://github.com/DivanteLtd/pimcore-classification-tree/blob/master/LICENSE).
+[GNU General Public License v3.0](https://github.com/DivanteLtd/pimcore-classification-tree/blob/master/LICENSE).
 
 ## Standards & Code Quality
 This module respects all Pimcore 5 code quality rules and our own PHPCS and PHPMD rulesets.
