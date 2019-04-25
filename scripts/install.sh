@@ -46,17 +46,31 @@ else
 fi
 
 echo -e "\e[32m=> Install Pimcore \e[0m"
-vendor/bin/pimcore-install \
-    --ignore-existing-config \
-    --admin-username admin \
-    --admin-password admin \
-    --mysql-host-socket $DB_HOST \
-    --mysql-database $DB_DATABASE \
-    --mysql-username $DB_USERNAME \
-    --mysql-password $DB_PASSWORD \
-    --mysql-port $DB_PORT \
-    --no-debug \
-    --no-interaction \
+if test -z "$DB_PASSWORD"
+then
+    vendor/bin/pimcore-install \
+        --ignore-existing-config \
+        --admin-username admin \
+        --admin-password admin \
+        --mysql-host-socket $DB_HOST \
+        --mysql-database $DB_DATABASE \
+        --mysql-username $DB_USERNAME \
+        --mysql-port $DB_PORT \
+        --no-debug \
+        --no-interaction
+else
+    vendor/bin/pimcore-install \
+        --ignore-existing-config \
+        --admin-username admin \
+        --admin-password admin \
+        --mysql-host-socket $DB_HOST \
+        --mysql-database $DB_DATABASE \
+        --mysql-username $DB_USERNAME \
+        --mysql-password $DB_PASSWORD \
+        --mysql-port $DB_PORT \
+        --no-debug \
+        --no-interaction
+fi
 
 echo -e "\e[32m=> Enable Bundles \e[0m"
 while read -r line; do
