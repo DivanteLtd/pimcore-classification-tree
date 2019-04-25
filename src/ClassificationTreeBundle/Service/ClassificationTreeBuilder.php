@@ -1,6 +1,5 @@
 <?php
 /**
- * @category    wurth.dev
  * @date        12/01/2018
  * @author      Michał Bolka <mbolka@divante.pl>
  * @copyright   Copyright (c) 2018 DIVANTE (http://divante.pl)
