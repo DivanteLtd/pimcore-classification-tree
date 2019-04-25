@@ -10,8 +10,8 @@ BUNDLE_NAME="DivanteClassificationTreeBundle"
 
 DB_HOST="localhost"
 DB_PORT=3306
-DB_USERNAME="admin"
-DB_PASSWORD="admin"
+DB_USERNAME="root"
+DB_PASSWORD=""
 DB_DATABASE="pimcore_test"
 
 echo -e "\e[34m=> Start installing project \e[0m"
