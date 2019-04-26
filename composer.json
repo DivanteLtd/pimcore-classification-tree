@@ -2,7 +2,7 @@
   "name": "divante-ltd/pimcore-classification-tree",
   "type": "pimcore-bundle",
   "license": "GPL-3.0-or-later",
-  "description": "",
+  "description": "Classification Tree lets you add new custom view with classification tree.",
   "keywords": [
     "pimcore",
     "pimcore-plugin"

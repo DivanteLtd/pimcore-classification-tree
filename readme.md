@@ -4,7 +4,7 @@
 [![Total Downloads](https://poser.pugx.org/divante-ltd/pimcore-classification-tree/downloads)](https://packagist.org/packages/divante-ltd/pimcore-classification-tree)
 [![License](https://poser.pugx.org/divante-ltd/pimcore-classification-tree/license)](https://github.com/DivanteLtd/pimcore-classification-tree/blob/master/LICENSE)
 
-Classification Tree test you Classification Tree lets you add new custom view with classification tree.
+Classification Tree lets you add new custom view with classification tree.
 
 ![Classification Tree](docs/example.jpeg?raw=true "Classification Tree")
 
