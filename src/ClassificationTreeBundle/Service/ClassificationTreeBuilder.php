@@ -36,8 +36,7 @@ class ClassificationTreeBuilder
     public function __construct(
         Service $searchService,
         StoreConfig\Listing $storeConfigListing = null
-    )
-    {
+    ) {
         $this->searchService = $searchService;
         $this->storeConfigListing = $storeConfigListing;
     }
