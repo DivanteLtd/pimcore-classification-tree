@@ -1,5 +1,6 @@
 # Classification Tree for Pimcore 5
 [![Build Status](https://travis-ci.org/DivanteLtd/pimcore-classification-tree.svg?branch=master)](https://travis-ci.org/DivanteLtd/pimcore-classification-tree)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/867f5904381d4e3a86bf33f2b5a99401)](https://www.codacy.com/app/Divante/pimcore-classification-tree?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DivanteLtd/pimcore-classification-tree&amp;utm_campaign=Badge_Grade)
 [![Latest Stable Version](https://poser.pugx.org/divante-ltd/pimcore-classification-tree/v/stable)](https://packagist.org/packages/divante-ltd/pimcore-classification-tree)
 [![Total Downloads](https://poser.pugx.org/divante-ltd/pimcore-classification-tree/downloads)](https://packagist.org/packages/divante-ltd/pimcore-classification-tree)
 [![License](https://poser.pugx.org/divante-ltd/pimcore-classification-tree/license)](https://github.com/DivanteLtd/pimcore-classification-tree/blob/master/LICENSE)
