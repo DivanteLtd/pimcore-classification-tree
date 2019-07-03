@@ -8,6 +8,7 @@
 namespace Divante\ClassificationTreeBundle\Service;
 
 use AdvancedObjectSearchBundle\Service;
+use Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver;
 use Pimcore\Db;
 use Pimcore\Logger;
 use Pimcore\Model\DataObject\ClassDefinition;
@@ -26,6 +27,9 @@ class ClassificationTreeBuilder
 
     /** @var StoreConfig\Listing $storeConfigListing */
     private $storeConfigListing;
+
+    /** @var TokenStorageUserResolver */
+    protected $tokenStorageResolver;
 
     /**
      * ClassificationTreeBuilder constructor.
@@ -274,7 +278,29 @@ class ClassificationTreeBuilder
             return ['results' => [], 'totalCount' => 0];
         }
 
-        $list->setCondition("o_id IN (" . implode(",", $ids) . ")");
+        $conditionFilters = [];
+        if (!$this->getAdminUser()->isAdmin()) {
+            $userIds = $this->getAdminUser()->getRoles();
+            $userIds[] = $this->getAdminUser()->getId();
+            $userIdsAsString = implode(',', $userIds);
+            $conditionFilters[] =
+                <<<EOD
+                (
+                    (
+                        select list from users_workspaces_object where userId in ($userIdsAsString)
+                        AND LOCATE(CONCAT(o_path,o_key),cpath)=1 ORDER BY LENGTH(cpath) DESC LIMIT 1
+                    )=1
+                OR
+                    (
+                        select list from users_workspaces_object where userId in ($userIdsAsString)
+                        AND LOCATE(cpath,CONCAT(o_path,o_key))=1 ORDER BY LENGTH(cpath) DESC LIMIT 1
+                    )=1
+                )
+EOD;
+        }
+
+        $conditionFilters[] = "o_id IN (" . implode(",", $ids) . ")";
+        $list->setCondition(implode(" AND ", $conditionFilters));
         $list->setOrderKey(" FIELD(o_id, " . implode(",", $ids) . ")", false);
         $list->load();
         $result = [];
@@ -389,5 +415,22 @@ class ClassificationTreeBuilder
             "lock"       => false,
             "unlock"     => false,
         ];
+    }
+
+    /**
+     * @return \Pimcore\Model\User|null
+     */
+    protected function getAdminUser()
+    {
+        return $this->tokenStorageResolver->getUser();
+    }
+
+    /**
+     * @required
+     * @param TokenStorageUserResolver $tokenStorageResolver
+     */
+    public function setTokenStorageResolver(TokenStorageUserResolver $tokenStorageResolver): void
+    {
+        $this->tokenStorageResolver = $tokenStorageResolver;
     }
 }
