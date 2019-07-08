@@ -241,7 +241,7 @@ class ClassificationTreeBuilder
         }
 
         $group = Classificationstore\GroupConfig::getByName($nodeName, $store->getId());
-        if ($group instanceof Classificationstore\GroupConfig) {
+        if (!$group instanceof Classificationstore\GroupConfig) {
             return [
                 'totalCount' => 0,
                 'results'    => [],
