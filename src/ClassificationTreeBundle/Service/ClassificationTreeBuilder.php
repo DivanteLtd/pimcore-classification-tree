@@ -303,7 +303,7 @@ EOD;
                 'leaf'          => true,
                 'locked'        => false,
                 'path'          => '/',
-                'permissions'   => $this->getPermission(true),
+                'permissions'   => $this->getPermission($object),
                 'qtipCfg'       => ['title' => $object->getKey()],
                 'text'          => $object->getKey(),
                 'type'          => 'object',
@@ -378,19 +378,23 @@ EOD;
 
 
     /**
-     * @param bool $isProduct
+     * @param Product|null $product
      * @return array
      */
-    protected function getPermission(bool $isProduct = false)
+    protected function getPermission(Product $product = null): array
     {
+        if ($product instanceof Product) {
+            return $product->getUserPermissions();
+        }
+
         return [
             "save"       => false,
             "unpublish"  => false,
             "lEdit"      => false,
             "lView"      => false,
             "layouts"    => false,
-            "list"       => false,
-            "view"       => $isProduct,
+            "list"       => true,
+            "view"       => false,
             "publish"    => false,
             "delete"     => false,
             "rename"     => false,
