@@ -257,9 +257,9 @@ class ClassificationTreeBuilder
 
         $conditionFilters[] = <<<EOD
 EXISTS(
-    SELECT groupId
-    FROM object_classificationstore_groups_{$classId}
-    WHERE o_id = o_id AND groupId = {$group->getId()}
+    SELECT ocg.groupId
+    FROM object_classificationstore_groups_{$classId} AS ocg
+    WHERE ocg.o_id = o_id AND ocg.groupId = {$group->getId()}
     LIMIT 1
 )
 EOD;
