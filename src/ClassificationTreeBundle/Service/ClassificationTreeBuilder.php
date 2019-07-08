@@ -111,7 +111,7 @@ class ClassificationTreeBuilder
     public function getClassificationCollections($nodeId, $limit = 30, $start = 0)
     {
 
-        $orderKey = 'sorter';
+        $orderKey = 'name';
         $order    = 'ASC';
         $list     = new Classificationstore\CollectionGroupRelation\Listing();
         if (substr($nodeId, 0, 3) == "EC-") {
@@ -256,11 +256,11 @@ class ClassificationTreeBuilder
         $conditionFilters = [];
 
         $conditionFilters[] = <<<EOD
-EXISTS(
-    SELECT ocg.groupId
+o_id IN (
+    SELECT ocg.o_id
     FROM object_classificationstore_groups_{$classId} AS ocg
-    WHERE ocg.o_id = o_id AND ocg.groupId = {$group->getId()}
-    LIMIT 1
+    WHERE ocg.groupId = {$group->getId()}
+    UNION SELECT 0
 )
 EOD;
 
