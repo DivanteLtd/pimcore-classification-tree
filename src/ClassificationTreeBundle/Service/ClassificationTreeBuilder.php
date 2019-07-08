@@ -7,10 +7,7 @@
 
 namespace Divante\ClassificationTreeBundle\Service;
 
-use AdvancedObjectSearchBundle\Service;
 use Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver;
-use Pimcore\Db;
-use Pimcore\Logger;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Classificationstore\StoreConfig;
 use Pimcore\Model\DataObject\Classificationstore;
@@ -22,35 +19,19 @@ use Pimcore\Model\DataObject\Product;
  */
 class ClassificationTreeBuilder
 {
-    /** @var Service $searchService */
-    protected $searchService;
-
     /** @var StoreConfig\Listing $storeConfigListing */
-    private $storeConfigListing;
+    protected $storeConfigListing;
 
     /** @var TokenStorageUserResolver */
     protected $tokenStorageResolver;
 
     /**
-     * ClassificationTreeBuilder constructor.
-     * @param Service $searchService
-     * @param StoreConfig\Listing|null $storeConfigListing
-     * @param Classificationstore\CollectionGroupRelation\Listing|null $collectingGroupRelationListing
+     * @required
+     * @param TokenStorageUserResolver $tokenStorageResolver
      */
-    public function __construct(
-        Service $searchService,
-        StoreConfig\Listing $storeConfigListing = null
-    ) {
-        $this->searchService = $searchService;
-        $this->storeConfigListing = $storeConfigListing;
-    }
-
-    /**
-     * @return StoreConfig\Listing
-     */
-    private function getStoreConfigListing()
+    public function setTokenStorageResolver(TokenStorageUserResolver $tokenStorageResolver): void
     {
-        return $this->storeConfigListing ?: new StoreConfig\Listing();
+        $this->tokenStorageResolver = $tokenStorageResolver;
     }
 
     /**
@@ -271,9 +252,9 @@ class ClassificationTreeBuilder
             ];
         }
 
-        $results = $this->searchService->doFilter($classId, $filters, '', $start, $limit);
-        $total   = $this->searchService->extractTotalCountFromResult($results);
-        $ids     = $this->searchService->extractIdsFromResult($results);
+//        $results = $this->searchService->doFilter($classId, $filters, '', $start, $limit);
+//        $total   = $this->searchService->extractTotalCountFromResult($results);
+//        $ids     = $this->searchService->extractIdsFromResult($results);
         if (count($ids) == 0) {
             return ['results' => [], 'totalCount' => 0];
         }
@@ -426,11 +407,10 @@ EOD;
     }
 
     /**
-     * @required
-     * @param TokenStorageUserResolver $tokenStorageResolver
+     * @return StoreConfig\Listing
      */
-    public function setTokenStorageResolver(TokenStorageUserResolver $tokenStorageResolver): void
+    protected function getStoreConfigListing()
     {
-        $this->tokenStorageResolver = $tokenStorageResolver;
+        return $this->storeConfigListing ?: new StoreConfig\Listing();
     }
 }

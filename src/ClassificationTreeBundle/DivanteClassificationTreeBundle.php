@@ -26,12 +26,4 @@ class DivanteClassificationTreeBundle extends AbstractPimcoreBundle
             '/bundles/divanteclassificationtree/js/pimcore/customViews/PagingTreeStore.js'
         ];
     }
-
-    /**
-     * @return object
-     */
-    public function getInstaller()
-    {
-        return $this->container->get(Installer::class);
-    }
 }

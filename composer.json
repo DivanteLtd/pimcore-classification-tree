@@ -18,12 +18,20 @@
       "name": "Bruno Ramalho",
       "email": "bramalho@divante.pl",
       "role": "Developer"
+    },
+    {
+      "name": "Agata Drozdek",
+      "email": "adrozdek@divante.pl",
+      "role": "Developer"
+    },
+    {
+      "name": "Korneliusz Kirsz",
+      "email": "kkirsz@divante.pl",
+      "role": "Developer"
     }
   ],
   "require": {
-    "pimcore/pimcore": "^5.5",
-    "pimcore/advanced-object-search": "~1.8",
-    "divanteltd/pimcoredevkit": "^0.7"
+    "pimcore/pimcore": "^5.5"
   },
   "require-dev": {
     "phpunit/phpunit": "^7.5",

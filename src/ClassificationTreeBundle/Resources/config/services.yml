@@ -23,12 +23,5 @@ services:
 #            - "plain_value"
 #            - "%parameter%"
 
-    Divante\ClassificationTreeBundle\Migrations\Installer:
-        public: true
-        arguments:
-            $bundle: "@=service('kernel').getBundle('DivanteClassificationTreeBundle')"
-
     Divante\ClassificationTreeBundle\Service\ClassificationTreeBuilder:
         public: true
-        arguments: ['@bundle.advanced_object_search.service']
-
