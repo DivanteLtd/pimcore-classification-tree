@@ -230,65 +230,68 @@ class ClassificationTreeBuilder
      */
     public function getProductsFromGroup($nodeName, $classificationName, $limit = 30, $start = 0)
     {
-        $order         = 'ASC';
-        $classId       = Product::classId();
-        $etimFieldnames = $this->getEtimFieldnames($classificationName);
-        if (empty($etimFieldnames)) {
-            return ['results' => [], 'totalCount' => 0];
-        }
+        $classId = $this->getClassId();
 
-        $list = new Product\Listing();
-        $list->setLimit($limit);
-        $list->setOrder($order);
-
-        $filters = [];
-
-        foreach ($etimFieldnames as $etimFieldname) {
-            $filters[] = [
-                "fieldname"         => $etimFieldname,
-                "filterEntryData"   => $nodeName,
-                "operator"          => "should",
-                "ignoreInheritance" => false
+        $store = StoreConfig::getByName($classificationName);
+        if (!$store instanceof StoreConfig) {
+            return [
+                'totalCount' => 0,
+                'results'    => [],
             ];
         }
 
-//        $results = $this->searchService->doFilter($classId, $filters, '', $start, $limit);
-//        $total   = $this->searchService->extractTotalCountFromResult($results);
-//        $ids     = $this->searchService->extractIdsFromResult($results);
-        if (count($ids) == 0) {
-            return ['results' => [], 'totalCount' => 0];
+        $group = Classificationstore\GroupConfig::getByName($nodeName, $store->getId());
+        if ($group instanceof Classificationstore\GroupConfig) {
+            return [
+                'totalCount' => 0,
+                'results'    => [],
+            ];
         }
 
+        $list = new Product\Listing();
+        $list->setUnpublished(true);
+        $list->setOrderKey('o_id')->setOrder('ASC');
+        $list->setOffset($start)->setLimit($limit);
+
         $conditionFilters = [];
+
+        $conditionFilters[] = <<<EOD
+EXISTS(
+    SELECT groupId
+    FROM object_classificationstore_groups_{$classId}
+    WHERE o_id = o_id AND groupId = {$group->getId()}
+    LIMIT 1
+)
+EOD;
+
         if (!$this->getAdminUser()->isAdmin()) {
-            $userIds = $this->getAdminUser()->getRoles();
-            $userIds[] = $this->getAdminUser()->getId();
+            $userIds         = $this->getAdminUser()->getRoles();
+            $userIds[]       = $this->getAdminUser()->getId();
             $userIdsAsString = implode(',', $userIds);
-            $conditionFilters[] =
-                <<<EOD
-                (
-                    (
-                        select list from users_workspaces_object where userId in ($userIdsAsString)
-                        AND LOCATE(CONCAT(o_path,o_key),cpath)=1 ORDER BY LENGTH(cpath) DESC LIMIT 1
-                    )=1
-                OR
-                    (
-                        select list from users_workspaces_object where userId in ($userIdsAsString)
-                        AND LOCATE(cpath,CONCAT(o_path,o_key))=1 ORDER BY LENGTH(cpath) DESC LIMIT 1
-                    )=1
-                )
+
+            $conditionFilters[] = <<<EOD
+(
+    (
+        select list from users_workspaces_object where userId in ($userIdsAsString)
+        AND LOCATE(CONCAT(o_path,o_key),cpath)=1 ORDER BY LENGTH(cpath) DESC LIMIT 1
+    )=1
+OR
+    (
+        select list from users_workspaces_object where userId in ($userIdsAsString)
+        AND LOCATE(cpath,CONCAT(o_path,o_key))=1 ORDER BY LENGTH(cpath) DESC LIMIT 1
+    )=1
+)
 EOD;
         }
 
-        $conditionFilters[] = "o_id IN (" . implode(",", $ids) . ")";
-        $list->setCondition(implode(" AND ", $conditionFilters));
-        $list->setOrderKey(" FIELD(o_id, " . implode(",", $ids) . ")", false);
+        $list->setCondition(implode(' AND ', $conditionFilters));
         $list->load();
+
         $result = [];
 
         /** @var Product $object */
         foreach ($list->getObjects() as $object) {
-            $resultItem = [
+            $result[] = [
                 'allowChildren' => true,
                 'allowDrop'     => 'false',
                 'basePath'      => '/',
@@ -307,10 +310,12 @@ EOD;
                 'published'     => $object->isPublished(),
                 'cls'           => $object->isPublished() ? '' : 'pimcore_unpublished'
             ];
-            $result[]   = $resultItem;
         }
 
-        return ['results' => $result, 'totalCount' => $total];
+        return [
+            'totalCount' => $list->getTotalCount(),
+            'results'    => $result
+        ];
     }
 
     /**
@@ -412,5 +417,13 @@ EOD;
     protected function getStoreConfigListing()
     {
         return $this->storeConfigListing ?: new StoreConfig\Listing();
+    }
+
+    /**
+     * @return int
+     */
+    protected function getClassId(): int
+    {
+        return (int) Product::classId();
     }
 }
