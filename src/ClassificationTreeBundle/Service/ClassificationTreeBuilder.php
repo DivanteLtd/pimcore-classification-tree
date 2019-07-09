@@ -298,7 +298,7 @@ EOD;
                 'elementType'   => 'object',
                 'expanded'      => false,
                 'iconCls'       => 'pimcore_icon_import_server',
-                'id'            => $object->getId(),
+                'id'            => $group->getId() . '-' . $object->getId(),
                 'isTarget'      => true,
                 'leaf'          => true,
                 'locked'        => false,
