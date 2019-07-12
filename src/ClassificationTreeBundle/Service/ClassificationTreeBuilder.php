@@ -8,10 +8,11 @@
 namespace Divante\ClassificationTreeBundle\Service;
 
 use Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver;
+use Pimcore\Db;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Classificationstore\StoreConfig;
 use Pimcore\Model\DataObject\Classificationstore;
-use Pimcore\Model\DataObject\Product;
+use Pimcore\Model\DataObject\Listing;
 
 /**
  * Class ClassificationTreeBuilder
@@ -230,7 +231,7 @@ class ClassificationTreeBuilder
      */
     public function getProductsFromGroup($nodeName, $classificationName, $limit = 30, $start = 0)
     {
-        $classId = $this->getClassId();
+        $classIds = $this->getClassIds();
 
         $store = StoreConfig::getByName($classificationName);
         if (!$store instanceof StoreConfig) {
@@ -248,14 +249,16 @@ class ClassificationTreeBuilder
             ];
         }
 
-        $list = new Product\Listing();
+        $list = new Listing();
         $list->setUnpublished(true);
         $list->setOrderKey('o_id')->setOrder('ASC');
         $list->setOffset($start)->setLimit($limit);
 
         $conditionFilters = [];
 
-        $conditionFilters[] = <<<EOD
+        $groupConditions = [];
+        foreach ($classIds as $classId) {
+            $groupConditions[] = <<<EOD
 o_id IN (
     SELECT ocg.o_id
     FROM object_classificationstore_groups_{$classId} AS ocg
@@ -263,6 +266,8 @@ o_id IN (
     UNION SELECT 0
 )
 EOD;
+        }
+        $conditionFilters[] = implode(" OR ", $groupConditions);
 
         if (!$this->getAdminUser()->isAdmin()) {
             $userIds         = $this->getAdminUser()->getRoles();
@@ -424,10 +429,17 @@ EOD;
     }
 
     /**
-     * @return int
+     * @return []int
      */
-    protected function getClassId(): int
+    protected function getClassIds(): array
     {
-        return (int) Product::classId();
+        $dbResults = Db::get()->fetchAll("SHOW TABLES LIKE 'object_classificationstore_groups_%'");
+        $results = array_map(
+            function ($value) {
+                return end(explode('_', reset($value)));
+            },
+            $dbResults
+        );
+        return $results;
     }
 }
