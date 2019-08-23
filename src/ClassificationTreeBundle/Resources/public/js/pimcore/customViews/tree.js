@@ -127,4 +127,19 @@ pimcore.object.customviews.tree = Class.create(pimcore.object.customviews.tree ,
 
     },
 
+    onTreeNodeClick: function (tree, record, item, index, event, eOpts ) {
+        if (event.ctrlKey === false && event.shiftKey === false && event.altKey === false) {
+            try {
+                if (record.data.permissions.view) {
+                    var id = record.data.id;
+                    if (this.config.title == 'Classification Tree') {
+                        id = id.split('-')[1];
+                    }
+                    pimcore.helpers.openObject(id, record.data.type);
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        }
+    }
 });

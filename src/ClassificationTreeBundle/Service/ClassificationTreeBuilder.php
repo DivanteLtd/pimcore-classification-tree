@@ -7,10 +7,7 @@
 
 namespace Divante\ClassificationTreeBundle\Service;
 
-use AdvancedObjectSearchBundle\Service;
 use Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver;
-use Pimcore\Db;
-use Pimcore\Logger;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Classificationstore\StoreConfig;
 use Pimcore\Model\DataObject\Classificationstore;
@@ -22,35 +19,19 @@ use Pimcore\Model\DataObject\Product;
  */
 class ClassificationTreeBuilder
 {
-    /** @var Service $searchService */
-    protected $searchService;
-
     /** @var StoreConfig\Listing $storeConfigListing */
-    private $storeConfigListing;
+    protected $storeConfigListing;
 
     /** @var TokenStorageUserResolver */
     protected $tokenStorageResolver;
 
     /**
-     * ClassificationTreeBuilder constructor.
-     * @param Service $searchService
-     * @param StoreConfig\Listing|null $storeConfigListing
-     * @param Classificationstore\CollectionGroupRelation\Listing|null $collectingGroupRelationListing
+     * @required
+     * @param TokenStorageUserResolver $tokenStorageResolver
      */
-    public function __construct(
-        Service $searchService,
-        StoreConfig\Listing $storeConfigListing = null
-    ) {
-        $this->searchService = $searchService;
-        $this->storeConfigListing = $storeConfigListing;
-    }
-
-    /**
-     * @return StoreConfig\Listing
-     */
-    private function getStoreConfigListing()
+    public function setTokenStorageResolver(TokenStorageUserResolver $tokenStorageResolver): void
     {
-        return $this->storeConfigListing ?: new StoreConfig\Listing();
+        $this->tokenStorageResolver = $tokenStorageResolver;
     }
 
     /**
@@ -130,7 +111,7 @@ class ClassificationTreeBuilder
     public function getClassificationCollections($nodeId, $limit = 30, $start = 0)
     {
 
-        $orderKey = 'sorter';
+        $orderKey = 'name';
         $order    = 'ASC';
         $list     = new Classificationstore\CollectionGroupRelation\Listing();
         if (substr($nodeId, 0, 3) == "EC-") {
@@ -249,87 +230,92 @@ class ClassificationTreeBuilder
      */
     public function getProductsFromGroup($nodeName, $classificationName, $limit = 30, $start = 0)
     {
-        $order         = 'ASC';
-        $classId       = Product::classId();
-        $etimFieldnames = $this->getEtimFieldnames($classificationName);
-        if (empty($etimFieldnames)) {
-            return ['results' => [], 'totalCount' => 0];
-        }
+        $classId = $this->getClassId();
 
-        $list = new Product\Listing();
-        $list->setLimit($limit);
-        $list->setOrder($order);
-
-        $filters = [];
-
-        foreach ($etimFieldnames as $etimFieldname) {
-            $filters[] = [
-                "fieldname"         => $etimFieldname,
-                "filterEntryData"   => $nodeName,
-                "operator"          => "should",
-                "ignoreInheritance" => false
+        $store = StoreConfig::getByName($classificationName);
+        if (!$store instanceof StoreConfig) {
+            return [
+                'totalCount' => 0,
+                'results'    => [],
             ];
         }
 
-        $results = $this->searchService->doFilter($classId, $filters, '', $start, $limit);
-        $total   = $this->searchService->extractTotalCountFromResult($results);
-        $ids     = $this->searchService->extractIdsFromResult($results);
-        if (count($ids) == 0) {
-            return ['results' => [], 'totalCount' => 0];
+        $group = Classificationstore\GroupConfig::getByName($nodeName, $store->getId());
+        if (!$group instanceof Classificationstore\GroupConfig) {
+            return [
+                'totalCount' => 0,
+                'results'    => [],
+            ];
         }
 
+        $list = new Product\Listing();
+        $list->setUnpublished(true);
+        $list->setOrderKey('o_id')->setOrder('ASC');
+        $list->setOffset($start)->setLimit($limit);
+
         $conditionFilters = [];
+
+        $conditionFilters[] = <<<EOD
+o_id IN (
+    SELECT ocg.o_id
+    FROM object_classificationstore_groups_{$classId} AS ocg
+    WHERE ocg.groupId = {$group->getId()}
+    UNION SELECT 0
+)
+EOD;
+
         if (!$this->getAdminUser()->isAdmin()) {
-            $userIds = $this->getAdminUser()->getRoles();
-            $userIds[] = $this->getAdminUser()->getId();
+            $userIds         = $this->getAdminUser()->getRoles();
+            $userIds[]       = $this->getAdminUser()->getId();
             $userIdsAsString = implode(',', $userIds);
-            $conditionFilters[] =
-                <<<EOD
-                (
-                    (
-                        select list from users_workspaces_object where userId in ($userIdsAsString)
-                        AND LOCATE(CONCAT(o_path,o_key),cpath)=1 ORDER BY LENGTH(cpath) DESC LIMIT 1
-                    )=1
-                OR
-                    (
-                        select list from users_workspaces_object where userId in ($userIdsAsString)
-                        AND LOCATE(cpath,CONCAT(o_path,o_key))=1 ORDER BY LENGTH(cpath) DESC LIMIT 1
-                    )=1
-                )
+
+            $conditionFilters[] = <<<EOD
+(
+    (
+        select list from users_workspaces_object where userId in ($userIdsAsString)
+        AND LOCATE(CONCAT(o_path,o_key),cpath)=1 ORDER BY LENGTH(cpath) DESC LIMIT 1
+    )=1
+OR
+    (
+        select list from users_workspaces_object where userId in ($userIdsAsString)
+        AND LOCATE(cpath,CONCAT(o_path,o_key))=1 ORDER BY LENGTH(cpath) DESC LIMIT 1
+    )=1
+)
 EOD;
         }
 
-        $conditionFilters[] = "o_id IN (" . implode(",", $ids) . ")";
-        $list->setCondition(implode(" AND ", $conditionFilters));
-        $list->setOrderKey(" FIELD(o_id, " . implode(",", $ids) . ")", false);
+        $list->setCondition(implode(' AND ', $conditionFilters));
         $list->load();
+
         $result = [];
 
         /** @var Product $object */
         foreach ($list->getObjects() as $object) {
-            $resultItem = [
+            $result[] = [
                 'allowChildren' => true,
                 'allowDrop'     => 'false',
                 'basePath'      => '/',
                 'elementType'   => 'object',
                 'expanded'      => false,
                 'iconCls'       => 'pimcore_icon_import_server',
-                'id'            => $object->getId(),
+                'id'            => $group->getId() . '-' . $object->getId(),
                 'isTarget'      => true,
                 'leaf'          => true,
                 'locked'        => false,
                 'path'          => '/',
-                'permissions'   => $this->getPermission(true),
+                'permissions'   => $this->getPermission($object),
                 'qtipCfg'       => ['title' => $object->getKey()],
                 'text'          => $object->getKey(),
                 'type'          => 'object',
                 'published'     => $object->isPublished(),
                 'cls'           => $object->isPublished() ? '' : 'pimcore_unpublished'
             ];
-            $result[]   = $resultItem;
         }
 
-        return ['results' => $result, 'totalCount' => $total];
+        return [
+            'totalCount' => $list->getTotalCount(),
+            'results'    => $result
+        ];
     }
 
     /**
@@ -392,19 +378,23 @@ EOD;
 
 
     /**
-     * @param bool $isProduct
+     * @param Product|null $product
      * @return array
      */
-    protected function getPermission(bool $isProduct = false)
+    protected function getPermission(Product $product = null): array
     {
+        if ($product instanceof Product) {
+            return $product->getUserPermissions();
+        }
+
         return [
             "save"       => false,
             "unpublish"  => false,
             "lEdit"      => false,
             "lView"      => false,
             "layouts"    => false,
-            "list"       => false,
-            "view"       => $isProduct,
+            "list"       => true,
+            "view"       => false,
             "publish"    => false,
             "delete"     => false,
             "rename"     => false,
@@ -426,11 +416,18 @@ EOD;
     }
 
     /**
-     * @required
-     * @param TokenStorageUserResolver $tokenStorageResolver
+     * @return StoreConfig\Listing
      */
-    public function setTokenStorageResolver(TokenStorageUserResolver $tokenStorageResolver): void
+    protected function getStoreConfigListing()
     {
-        $this->tokenStorageResolver = $tokenStorageResolver;
+        return $this->storeConfigListing ?: new StoreConfig\Listing();
+    }
+
+    /**
+     * @return int
+     */
+    protected function getClassId(): int
+    {
+        return (int) Product::classId();
     }
 }
