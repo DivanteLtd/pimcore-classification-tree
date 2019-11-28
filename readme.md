@@ -22,7 +22,7 @@ Classification Tree lets you add new custom view with classification tree.
 	- [About Authors](#about-authors)
 
 ## Compatibility
-This module is compatible with Pimcore 5.3.0 and higher.
+This module is compatible with Pimcore 5.5.0 and higher.
 
 ## Installing/Getting started
 

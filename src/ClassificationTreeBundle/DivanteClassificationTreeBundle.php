@@ -6,8 +6,8 @@
  */
 namespace Divante\ClassificationTreeBundle;
 
-use Divante\ClassificationTreeBundle\Migrations\Installer;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
+use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 
 /**
  * Class DivanteClassificationTreeBundle
@@ -15,6 +15,16 @@ use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
  */
 class DivanteClassificationTreeBundle extends AbstractPimcoreBundle
 {
+    use PackageVersionTrait;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getComposerPackageName()
+    {
+        return 'divante-ltd/pimcore-classification-tree';
+    }
+
     /**
      * @return array
      */
