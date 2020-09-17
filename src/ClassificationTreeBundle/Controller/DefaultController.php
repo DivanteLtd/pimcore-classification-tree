@@ -7,7 +7,7 @@
 namespace Divante\ClassificationTreeBundle\Controller;
 
 use Divante\ClassificationTreeBundle\Service\ClassificationTreeBuilder;
-use Pimcore\Bundle\AdminBundle\Controller\Admin\DataObject\DataObjectController;
+use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  * @package Divante\ClassificationTreeBundle\Controller
  * @Route("/admin/classification-tree")
  */
-class DefaultController extends DataObjectController
+class DefaultController extends AdminController
 {
     /** @var  ClassificationTreeBuilder */
     protected $treeBuilderService;
