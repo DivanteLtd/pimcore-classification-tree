@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Divante\ClassificationTreeBundle\Service;
 
-use AdvancedObjectSearchBundle\Service;
 use Divante\ClassificationTreeBundle\Service\ClassificationTreeBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -15,20 +14,7 @@ class ClassificationTreeBuilderTest extends TestCase
 
     public function setUp(): void
     {
-        /** @var Service|MockObject $searchService */
-        $searchService = $this->createMock(Service::class);
-
-        /** @var StoreConfig\Listing|MockObject $listing */
-        $storeConfigListing = $this->getMockBuilder(StoreConfig\Listing::class)
-            ->setMethods(['load'])
-            ->getMock();
-        $storeConfigListing->method('load')
-            ->withAnyParameters()
-            ->willReturn([new StoreConfig()]);
-
-        $this->classificationTreeBuilder = new ClassificationTreeBuilder(
-            $searchService, $storeConfigListing
-        );
+        $this->classificationTreeBuilder = new ClassificationTreeBuilder();
     }
 
     public function testGetRootNodes()
